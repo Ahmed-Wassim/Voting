@@ -65,4 +65,13 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function isAdmin()
+    {
+        return in_array($this->email, [
+            'ahmedwassim317@gmail.com',
+            'admin@gmail.com',
+            'superAdmin@gmail.com'
+        ]);
+    }
 }

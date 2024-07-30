@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::select('id', 'name', 'slug', 'description')->paginate(10);
-        return CategoryResource::collection($categories);
+        return response()->success(CategoryResource::collection($categories));
     }
 
     /**
@@ -27,9 +27,10 @@ class CategoryController extends Controller
     {
         try {
             $category = Category::create($request->validated());
-            return new CategoryResource($category);
+            return response()->success(new CategoryResource($category));
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create category'], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+            return response()->error('Failed to create category', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -39,9 +40,10 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         try {
-            return new CategoryResource($category);
+
+            return response()->success(new CategoryResource($category));
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Category not found'], Response::HTTP_NOT_FOUND);
+            return response()->error('Category not found', Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -52,9 +54,9 @@ class CategoryController extends Controller
     {
         try {
             $category->update($request->validated());
-            return new CategoryResource($category);
+            return response()->success(new CategoryResource($category));
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Category not found'], Response::HTTP_NOT_FOUND);
+            return response()->error('Category not found', Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -68,7 +70,7 @@ class CategoryController extends Controller
             $category->delete();
             return response()->noContent();
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Category not found'], Response::HTTP_NOT_FOUND);
+            return response()->error('Category not found', Response::HTTP_NOT_FOUND);
         }
     }
 }
