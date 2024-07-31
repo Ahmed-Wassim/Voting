@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::select('id', 'name', 'slug', 'description')->paginate(10);
+        $categories = Category::select('id', 'name', 'slug', 'description')->with('ideas')->paginate(10);
         return response()->success(CategoryResource::collection($categories));
     }
 
@@ -29,7 +29,6 @@ class CategoryController extends Controller
             $category = Category::create($request->validated());
             return response()->success(new CategoryResource($category));
         } catch (\Exception $e) {
-
             return response()->error('Failed to create category', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -40,7 +39,6 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         try {
-
             return response()->success(new CategoryResource($category));
         } catch (ModelNotFoundException $e) {
             return response()->error('Category not found', Response::HTTP_NOT_FOUND);

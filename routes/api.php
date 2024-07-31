@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\IdeaController;
 
 Route::group(
     [
@@ -21,8 +22,16 @@ Route::group(
 
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index');
-    Route::post('/categories', 'store');
+    Route::post('/categories', 'store')->middleware('auth:api');
     Route::get('/categories/{category:slug}', 'show');
-    Route::put('/categories/{category:slug}', 'update');
-    Route::delete('/categories/{category:slug}', 'destroy');
+    Route::put('/categories/{category:slug}', 'update')->middleware('auth:api');
+    Route::delete('/categories/{category:slug}', 'destroy')->middleware('auth:api');
+});
+
+Route::controller(IdeaController::class)->group(function () {
+    Route::get('/ideas', 'index');
+    Route::post('/ideas', 'store')->middleware('auth:api');
+    Route::get('/ideas/{idea:slug}', 'show');
+    Route::put('/ideas/{idea:slug}', 'update')->middleware('auth:api');
+    Route::delete('/ideas/{idea:slug}', 'destroy')->middleware('auth:api');
 });

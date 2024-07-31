@@ -66,6 +66,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function ideas()
+    {
+        return $this->hasMany(Idea::class);
+    }
+
     public function isAdmin()
     {
         return in_array($this->email, [

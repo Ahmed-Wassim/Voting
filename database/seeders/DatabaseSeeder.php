@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Idea;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +16,17 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Ahmed Wassim',
-        //     'email' => 'ahmedwassim317@gmail.com',
-        // ]);
+        User::factory()->create([
+            'name' => 'Ahmed Wassim',
+            'email' => 'ahmedwassim317@gmail.com',
+            'password' => bcrypt('12345678'),
+        ]);
 
-        $this->call([CategorySeeder::class]);
+        Idea::factory(100)->create();
+
+        $this->call([
+            CategorySeeder::class,
+            StatusSeeder::class,
+        ]);
     }
 }
