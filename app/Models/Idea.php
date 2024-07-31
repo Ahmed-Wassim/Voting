@@ -52,4 +52,30 @@ class Idea extends Model
     {
         return $this->belongsTo(Status::class);
     }
+
+    public function votes()
+    {
+        return $this->belongsToMany(User::class, 'votes', 'idea_id', 'user_id');
+    }
+
+    public function vote()
+    {
+        $this->votes()->attach(auth()->id());
+    }
+
+    public function removeVote()
+    {
+        $this->votes()->detach(auth()->id());
+    }
+
+    public function isVotedByUser()
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return false;
+        }
+
+        return $this->votes()->where('user_id', $user->id)->exists();
+    }
 }

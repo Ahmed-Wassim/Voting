@@ -79,4 +79,9 @@ class User extends Authenticatable implements JWTSubject
             'superAdmin@gmail.com'
         ]);
     }
+
+    public function votes()
+    {
+        return $this->belongsToMany(Idea::class, 'votes');
+    }
 }

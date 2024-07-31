@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\VoteController;
 
 Route::group(
     [
@@ -35,3 +36,5 @@ Route::controller(IdeaController::class)->group(function () {
     Route::put('/ideas/{idea:slug}', 'update')->middleware('auth:api');
     Route::delete('/ideas/{idea:slug}', 'destroy')->middleware('auth:api');
 });
+
+Route::post('/idea/{idea:slug}/vote', VoteController::class)->middleware('auth:api');

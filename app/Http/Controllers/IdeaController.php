@@ -16,7 +16,11 @@ class IdeaController extends Controller
      */
     public function index()
     {
-        $ideas = Idea::with('user', 'category', 'status')->paginate(10);
+        $ideas = Idea::with('user', 'category', 'status')
+            ->withCount('votes')
+            ->latest()
+            ->simplePaginate(10);
+
         return response()->success(IdeaResource::collection($ideas));
     }
 
