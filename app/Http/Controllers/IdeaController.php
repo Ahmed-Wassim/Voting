@@ -16,10 +16,12 @@ class IdeaController extends Controller
      */
     public function index()
     {
+
         $ideas = Idea::with('user', 'category', 'status')
+            ->filter(request(['search', 'category', 'status', 'filter']))
             ->withCount('votes')
             ->latest()
-            ->simplePaginate(10);
+            ->get();
 
         return response()->success(IdeaResource::collection($ideas));
     }
@@ -32,12 +34,12 @@ class IdeaController extends Controller
     {
 
         // dd($request->validated());
-        // try {
-        $idea = Idea::create($request->validated());
-        return response()->success(new IdeaResource($idea));
-        // } catch (\Exception $e) {
-        //     return response()->error('Failed to create idea', Response::HTTP_INTERNAL_SERVER_ERROR);
-        // }
+        try {
+            $idea = Idea::create($request->validated());
+            return response()->success(new IdeaResource($idea));
+        } catch (\Exception $e) {
+            return response()->error('Failed to create idea', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

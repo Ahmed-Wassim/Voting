@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Category::class);
             $table->foreignIdFor(Status::class);
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->text('description');
             $table->timestamps();
         });
