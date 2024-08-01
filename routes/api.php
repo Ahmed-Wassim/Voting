@@ -5,8 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\VoteController;
 
+
+// Auth Routes
 Route::group(
     [
         // 'middleware' => 'api',
@@ -21,6 +24,7 @@ Route::group(
     }
 );
 
+// Category Routes
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index');
     Route::post('/categories', 'store')->middleware('auth:api');
@@ -29,6 +33,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::delete('/categories/{category:slug}', 'destroy')->middleware('auth:api');
 });
 
+// Idea Routes
 Route::controller(IdeaController::class)->group(function () {
     Route::get('/ideas', 'index');
     Route::post('/ideas', 'store')->middleware('auth:api');
@@ -37,4 +42,8 @@ Route::controller(IdeaController::class)->group(function () {
     Route::delete('/ideas/{idea:slug}', 'destroy')->middleware('auth:api');
 });
 
+// Status Routes
+Route::get('/status', StatusController::class);
+
+// Vote Routes
 Route::post('/idea/{idea:slug}/vote', VoteController::class)->middleware('auth:api');
