@@ -37,9 +37,10 @@ Route::controller(CategoryController::class)->group(function () {
 Route::controller(IdeaController::class)->group(function () {
     Route::get('/ideas', 'index');
     Route::post('/ideas', 'store')->middleware('auth:api');
-    Route::get('/ideas/{idea:slug}', 'show');
+    Route::get('/ideas/{idea:slug}', 'show')->name('idea.show');
     Route::put('/ideas/{idea:slug}', 'update')->middleware('auth:api');
     Route::delete('/ideas/{idea:slug}', 'destroy')->middleware('auth:api');
+    Route::patch('/idea/{idea:slug}/status', 'updateStatus')->middleware('auth:api');
 });
 
 // Status Routes

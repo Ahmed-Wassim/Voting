@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Idea;
+use Illuminate\Http\Request;
 use App\Http\Resources\IdeaResource;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreIdeaRequest;
+use App\Mail\IdeaStatusUpdatedMailable;
 use App\Http\Requests\UpdateIdeaRequest;
+use App\Http\Requests\UpdateIdeaStatusRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -83,5 +87,35 @@ class IdeaController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->error('Category not found', Response::HTTP_NOT_FOUND);
         }
+    }
+
+    public function updateStatus(UpdateIdeaStatusRequest $request, Idea $idea)
+    {
+        // dd($request->all());
+        try {
+            $idea->status_id = $request->input('status_id');
+            $idea->save();
+
+            if ($request->input('notify') == 'yes') {
+                $this->notifyAllVoters($idea);
+            }
+
+            return response()->json(['message' => 'Status updated successfully']);
+        } catch (ModelNotFoundException $e) {
+            return response()->error('Idea not found', Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    private function notifyAllVoters(Idea $idea)
+    {
+        $idea->votes()
+            ->select('name', 'email')
+            ->chunk(100, function ($voters) use ($idea) {
+                foreach ($voters as $voter) {
+                    // dd($voter);
+                    Mail::to($voter)
+                        ->queue(new IdeaStatusUpdatedMailable($idea));
+                }
+            });
     }
 }
