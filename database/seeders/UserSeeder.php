@@ -13,7 +13,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-
         User::firstOrCreate([
             'name' => 'Ahmed Wassim',
             'email' => 'ahmedwassim317@gmail.com',
@@ -24,5 +23,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123456'),
         ]);
+
+        User::factory(100)->create();
     }
 }

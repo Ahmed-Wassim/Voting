@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,11 +17,12 @@ class IdeaFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => fake()->numberBetween(1, 100),
             'category_id' => fake()->numberBetween(1, 10),
             'status_id' => fake()->numberBetween(1, 5),
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
+            'spams' => fake()->numberBetween(0, 4),
         ];
     }
 }

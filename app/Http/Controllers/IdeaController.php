@@ -25,7 +25,7 @@ class IdeaController extends Controller
             ->filter(request(['search', 'category', 'status', 'filter']))
             ->withCount('votes')
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return response()->success(IdeaResource::collection($ideas));
     }

@@ -14,19 +14,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Ahmed Wassim',
-            'email' => 'ahmedwassim317@gmail.com',
-            'password' => bcrypt('12345678'),
-        ]);
-
-        Idea::factory(100)->create();
 
         $this->call([
+            UserSeeder::class,
             CategorySeeder::class,
             StatusSeeder::class,
+            IdeaSeeder::class,
         ]);
+
+        // i faced problem with user_id is null and tried many solution but it didn't work so did it with hard work;
+        foreach (Idea::all() as $idea) {
+            $idea->update([
+                'user_id' => User::inRandomOrder()->first()->id,
+            ]);
+        }
+
+        foreach (Idea::limit(100)->get() as $idea) {
+            foreach (User::inRandomOrder()->limit(rand(1, 10))->get() as $user) {
+                $idea->votes()->attach($user->id);
+            }
+        }
     }
 }

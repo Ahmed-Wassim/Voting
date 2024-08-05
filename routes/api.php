@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\SpamController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\VoteController;
 
@@ -48,3 +49,7 @@ Route::get('/status', StatusController::class);
 
 // Vote Routes
 Route::post('/idea/{idea:slug}/vote', VoteController::class)->middleware('auth:api');
+
+// Spam idea
+Route::post('idea/{idea:slug}/spam', [SpamController::class, 'markAsSpam'])->middleware('auth:api');
+Route::post('idea/{idea:slug}/notSpam', [SpamController::class, 'markAsNotSpam'])->middleware('auth:api');

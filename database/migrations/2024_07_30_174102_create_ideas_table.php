@@ -16,12 +16,13 @@ return new class extends Migration
     {
         Schema::create('ideas', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->nullable();
             $table->foreignIdFor(Category::class);
             $table->foreignIdFor(Status::class);
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
+            $table->bigInteger('spams')->default(0);
             $table->timestamps();
         });
     }

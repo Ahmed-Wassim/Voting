@@ -25,6 +25,7 @@ class IdeaResource extends JsonResource
             'created_at' => $this->created_at->diffForHumans(),
             'voted_by_user' => $this->isVotedByUser(),
             'votes_count' => $this->votes()->count(),
+            'spams_count' => $this->spams,
         ];
     }
 }

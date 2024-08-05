@@ -49,11 +49,14 @@ class Idea extends Model
             });
         });
 
+
         $query->when($filters['filter'] ?? false, function ($query, $filter) {
             if ($filter == 'top_voted') {
                 $query->orderBy('votes_count', 'desc');
             } elseif ($filter == 'my_ideas' && auth()->check()) {
                 $query->where('user_id', auth()->id());
+            } elseif ($filter == 'spams') {
+                $query->where('spams', '>', 0)->orderbyDesc('spams');
             }
         });
     }
