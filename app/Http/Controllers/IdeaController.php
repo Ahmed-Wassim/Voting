@@ -64,6 +64,9 @@ class IdeaController extends Controller
      */
     public function update(UpdateIdeaRequest $request, Idea $idea)
     {
+        if (auth()->user()->cannot('update', $idea)) {
+            return response()->error('You are not allowed to update this idea', Response::HTTP_UNAUTHORIZED);
+        }
         try {
             $idea->update([
                 'title' => $request->title ?? $idea->title,
@@ -81,6 +84,9 @@ class IdeaController extends Controller
      */
     public function destroy(Idea $idea)
     {
+        if (auth()->user()->cannot('delete', $idea)) {
+            return response()->error('You are not allowed to update this idea', Response::HTTP_UNAUTHORIZED);
+        }
         try {
             $idea->delete();
             return response()->noContent();
@@ -92,6 +98,9 @@ class IdeaController extends Controller
     public function updateStatus(UpdateIdeaStatusRequest $request, Idea $idea)
     {
         // dd($request->all());
+        if (auth()->user()->cannot('update', $idea)) {
+            return response()->error('You are not allowed to update this idea', Response::HTTP_UNAUTHORIZED);
+        }
         try {
             $idea->status_id = $request->input('status_id');
             $idea->save();
@@ -112,7 +121,6 @@ class IdeaController extends Controller
             ->select('name', 'email')
             ->chunk(100, function ($voters) use ($idea) {
                 foreach ($voters as $voter) {
-                    // dd($voter);
                     Mail::to($voter)
                         ->queue(new IdeaStatusUpdatedMailable($idea));
                 }
