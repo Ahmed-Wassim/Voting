@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\SpamController;
 use App\Http\Controllers\StatusController;
@@ -53,3 +54,8 @@ Route::post('/idea/{idea:slug}/vote', VoteController::class)->middleware('auth:a
 // Spam idea
 Route::post('idea/{idea:slug}/spam', [SpamController::class, 'markAsSpam'])->middleware('auth:api');
 Route::post('idea/{idea:slug}/notSpam', [SpamController::class, 'markAsNotSpam'])->middleware('auth:api');
+
+// Comment Resource
+Route::post('/idea/{idea:slug}/comment', [CommentController::class, 'store'])->middleware('auth:api');
+Route::put('/idea/{idea:slug}/comment/{comment}/update', [CommentController::class, 'update'])->middleware('auth:api');
+Route::delete('/idea/{idea:slug}/comment/{comment}/delete', [CommentController::class, 'destroy'])->middleware('auth:api');

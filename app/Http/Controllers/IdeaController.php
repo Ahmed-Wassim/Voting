@@ -24,6 +24,7 @@ class IdeaController extends Controller
         $ideas = Idea::with('user', 'category', 'status')
             ->filter(request(['search', 'category', 'status', 'filter']))
             ->withCount('votes')
+            ->withCount('comments')
             ->latest()
             ->paginate(10);
 
@@ -52,6 +53,8 @@ class IdeaController extends Controller
     public function show(Idea $idea)
     {
         try {
+            $idea->load('user', 'category', 'status', 'comments');
+
             return response()->success(new IdeaResource($idea));
         } catch (ModelNotFoundException $e) {
             return response()->error('Idea not found', Response::HTTP_NOT_FOUND);

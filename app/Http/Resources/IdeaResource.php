@@ -26,6 +26,8 @@ class IdeaResource extends JsonResource
             'voted_by_user' => $this->isVotedByUser(),
             'votes_count' => $this->votes()->count(),
             'spams_count' => $this->spams,
+            'comments_count' => $this->comments()->count(),
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
         ];
     }
 }

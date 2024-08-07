@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             StatusSeeder::class,
             IdeaSeeder::class,
+            CommentSeeder::class,
         ]);
 
         // i faced problem with user_id is null and tried many solution but it didn't work so did it with hard work;

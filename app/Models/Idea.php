@@ -66,7 +66,6 @@ class Idea extends Model
 
     protected static function boot()
     {
-
         parent::boot();
         static::creating(function ($idea) {
             $idea->user_id = auth()->id();
@@ -92,6 +91,11 @@ class Idea extends Model
     public function votes()
     {
         return $this->belongsToMany(User::class, 'votes', 'idea_id', 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
 
